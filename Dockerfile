@@ -30,7 +30,7 @@ COPY --from=build /app/dist ./dist
 
 # Expose the port your application listens on
 # Cloud Run expects your application to listen on the port specified by the PORT environment variable
-ENV PORT 8080
+ENV PORT 3000
 EXPOSE ${PORT}
 
 # Define the command to run your application
