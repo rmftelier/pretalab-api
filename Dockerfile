@@ -1,36 +1,38 @@
-FROM node:20-alpine3.18 AS base
+# Stage 1: Build the TypeScript application
+FROM node:20-slim AS build
 
-FROM base AS deps
-RUN apk add --no-cache libc6-compat
+# Set the working directory inside the container
 WORKDIR /app
 
+# Copy package.json and package-lock.json (or yarn.lock) first to leverage Docker's cache
 COPY package*.json ./
-RUN npm ci
 
-FROM base AS builder
-WORKDIR /app
-COPY --from=deps /app/node_modules ./node_modules
+# Install dependencies
+RUN npm install
+
+# Copy the rest of the application code
 COPY . .
 
+# Build the TypeScript application
+# Ensure your package.json has a "build" script that compiles TypeScript
 RUN npm run build
 
-FROM base AS runner
+# Stage 2: Create the final, smaller runtime image
+FROM node:20-slim
+
+# Set the working directory inside the container
 WORKDIR /app
 
-ENV NODE_ENV production
+# Copy only the necessary files from the build stage
+COPY --from=build /app/node_modules ./node_modules
+COPY --from=build /app/package*.json ./
+COPY --from=build /app/dist ./dist
 
-RUN addgroup --system --gid 1001 nodejs
-RUN adduser --system --uid 1001 transactions
+# Expose the port your application listens on
+# Cloud Run expects your application to listen on the port specified by the PORT environment variable
+ENV PORT 8080
+EXPOSE ${PORT}
 
-COPY --from=builder --chown=transactions:nodejs /app/dist ./dist
-COPY --from=builder /app/node_modules ./node_modules
-COPY --from=builder /app/package.json ./package.json
-COPY --from=builder /app/src ./src
-
-USER transactions
-
-EXPOSE 3000
-
-ENV PORT 3000
-
-CMD ["npm", "start"]
+# Define the command to run your application
+# Assuming your built JavaScript entry point is in dist/index.js (adjust as needed)
+CMD ["node", "dist/index.js"]
