@@ -1,41 +1,36 @@
-FROM node:20-alpine3.18 AS development
+FROM node:20-alpine3.18 AS base
 
+FROM base AS deps
 RUN apk add --no-cache libc6-compat
 WORKDIR /app
 
-COPY --chown=node:node package*.json ./
-COPY --chown=node:node src ./src
+COPY package*.json ./
+RUN npm ci
 
-RUN npm install
-
-COPY --chown=node:node . .
-
-USER node
-
-FROM node:20-alpine3.18 AS build
-
+FROM base AS builder
 WORKDIR /app
-
-COPY --chown=node:node package*.json ./
-COPY --chown=node:node src ./src
-
-COPY --chown=node:node --from=development /app/node_modules ./node_modules
-
-COPY --chown=node:node . .
+COPY --from=deps /app/node_modules ./node_modules
+COPY . .
 
 RUN npm run build
 
+FROM base AS runner
+WORKDIR /app
+
 ENV NODE_ENV production
 
-RUN npm ci --only=production && npm cache clean --force
+RUN addgroup --system --gid 1001 nodejs
+RUN adduser --system --uid 1001 transactions
 
-USER node
+COPY --from=builder --chown=transactions:nodejs /app/dist ./dist
+COPY --from=builder /app/node_modules ./node_modules
+COPY --from=builder /app/package.json ./package.json
+COPY --from=builder /app/src ./src
 
-FROM node:20-alpine3.18 AS production
-
-COPY --chown=node:node --from=build /app/node_modules ./node_modules
-COPY --chown=node:node --from=build /app/dist ./dist
+USER transactions
 
 EXPOSE 3000
 
-CMD ["node", "dist/index.js"]
+ENV PORT 3000
+
+CMD ["npm", "start"]
