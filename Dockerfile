@@ -6,7 +6,7 @@ WORKDIR /app
 COPY --chown=node:node package*.json ./
 COPY --chown=node:node src ./src
 
-RUN npm ci
+RUN npm install
 
 COPY --chown=node:node . .
 
