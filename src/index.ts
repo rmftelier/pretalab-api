@@ -5,11 +5,10 @@ import { getTransactionById } from "./controller/transaction";
 const app = express();
 
 app.get("/", (_req, res) => {
-  res.json({ message: "Transactions API v2.1" });
+  res.json({ message: "Transactions API" });
 });
 
 app.get("/transactions", (_req, res) => {
-  console.log("transactions");
   res.json({ transactions });
 });
 
