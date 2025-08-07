@@ -1,8 +1,10 @@
 import express from "express";
 import { transactions } from "./data";
-import { getTransactionById } from "./controllers/transactions";
+import { postTransaction, getTransactionById } from "./controllers/transactions";
 
 const app = express();
+
+app.use(express.json());
 
 app.get("/", (_req, res) => {
   res.json({ message: "Transactions API" });
@@ -14,6 +16,10 @@ app.get("/transactions", (_req, res) => {
 
 app.get("/transactions/:id", (req, res) => {
   getTransactionById(req, res);
+});
+
+app.post("/transactions", (req, res) => {
+  postTransaction(req, res);
 });
 
 app.listen(3000, () => {

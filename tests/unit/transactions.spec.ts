@@ -1,5 +1,5 @@
-import { transactions } from '../../src/data';
-import { transactionById } from '../../src/services/transactions';
+import { Transaction, transactions } from '../../src/data';
+import { createTransaction, transactionById } from '../../src/services/transactions';
 
 describe('Transactions by Id', () => {
   it('should return a transaction when ID exists', () => {
@@ -12,5 +12,33 @@ describe('Transactions by Id', () => {
     expect(transaction).toBeNull();
   });
 });
+
+describe('Create Transaction', () => {
+
+  it('should create a transaction', () => {
+
+    const transaction: Transaction = {
+      id: "11",
+      date: "2024-08-02T15:00:00Z",
+      description: "Consulta Médica",
+      amount: 100,
+      type: "income",
+      category: "Saúde"
+    }
+
+    const newTransaction = createTransaction(transaction);
+
+    expect(newTransaction).toMatchObject({
+      date: "2024-08-02T15:00:00Z",
+      description: "Consulta Médica",
+      amount: 100,
+      type: "income",
+      category: "Saúde",
+      id: expect.any(String)
+    });
+  });
+
+});
+
 
 

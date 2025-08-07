@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { transactionById } from "../services/transactions";
+import { createTransaction, transactionById } from "../services/transactions";
 
 export const getTransactionById = (req: Request, res: Response) => {
   const { id } = req.params;
@@ -11,4 +11,15 @@ export const getTransactionById = (req: Request, res: Response) => {
   }
 
   return res.status(200).json({ transaction });
+};
+
+export const postTransaction = (req: Request, res: Response) => {
+  const { id, date, description, amount, type, category } = req.body;
+
+  const newTransaction = createTransaction({ id, date, description, amount, type, category });
+
+  return res.status(201).json({
+    message: "Transaction created",
+    transaction: newTransaction
+  });
 }
