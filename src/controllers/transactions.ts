@@ -7,8 +7,8 @@ export const getTransactionById = (req: Request, res: Response) => {
   const transaction = transactionById(id);
 
   if (!transaction) {
-    res.status(404).json({ message: "Transaction not found" });
+    return res.status(404).json({ message: "Transaction not found" });
   }
 
-  res.status(200).json({ transaction });
+  return res.status(200).json({ transaction });
 }
