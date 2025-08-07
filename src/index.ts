@@ -5,7 +5,7 @@ import { getTransactionById } from "./controllers/transactions";
 const app = express();
 
 app.get("/", (_req, res) => {
-  res.json({ message: "Transactions API v1" });
+  res.json({ message: "Transactions API" });
 });
 
 app.get("/transactions", (_req, res) => {
