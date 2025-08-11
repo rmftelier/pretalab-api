@@ -1,29 +1,24 @@
 import express from "express";
-import { transactions } from "./data";
-import { postTransaction, getTransactionById } from "./controllers/transactions";
+import cors from "cors";
+import dotenv from 'dotenv';
+import { connectToMongo } from "./infra/database/mongoConnect";
+import { transactionsRoutes } from "./routes/routes";
+
+dotenv.config();
+
+const URL = process.env.MONGO_DB_URL || 'undefined';
+const PORT = process.env.PORT;
 
 const app = express();
 
 app.use(express.json());
+app.use(cors());
+app.use(transactionsRoutes);
 
-app.get("/", (_req, res) => {
-  res.json({ message: "Transactions API" });
-});
-
-app.get("/transactions", (_req, res) => {
-  res.json({ transactions });
-});
-
-app.get("/transactions/:id", (req, res) => {
-  getTransactionById(req, res);
-});
-
-app.post("/transactions", (req, res) => {
-  postTransaction(req, res);
-});
-
-app.listen(3000, () => {
-  console.log("Server is running on port 3000");
+connectToMongo(URL).then(() => {
+  app.listen(PORT, () => {
+    console.log("Server is running on port 3000");
+  });
 });
 
 export default app;

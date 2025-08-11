@@ -1,21 +1,18 @@
-import { Transaction, transactions } from "../data";
+import { Transaction } from "../core/entities/Transaction";
+import { TransactionRepository } from "../repositories/TransactionRepository";
 
-export const transactionById = (id: string): Transaction | null => {
-  return transactions.find((transaction) => transaction.id === id) || null;
-}
+export class TransactionService {
+  constructor(private repository: TransactionRepository) { }
 
-export const createTransaction = (data: Transaction) => {
+  getAll() {
+    return this.repository.findAll();
+  }
 
-  const newTransaction: Transaction = {
-    id: data.id,
-    date: data.date,
-    description: data.description,
-    amount: data.amount,
-    type: data.type,
-    category: data.category
-  };
+  getById(id: string) {
+    return this.repository.findById(id);
+  }
 
-  transactions.push(newTransaction);
-
-  return newTransaction;
+  create(transaction: Transaction) {
+    return this.repository.create(transaction);
+  }
 }
