@@ -1,4 +1,3 @@
-//Ficará aqui as rotas
 import { Router } from "express";
 import { TransactionController } from "../controllers/transactions";
 import { TransactionService } from "../services/transactions";
