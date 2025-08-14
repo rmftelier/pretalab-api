@@ -12,3 +12,11 @@ export const generateText = async (prompt: string) =>
     model: "gemini-2.5-flash",
     contents: prompt
   });
+
+//passar como um chat
+export const chat = async (prompt: any[]) =>
+  ai.models.generateContent({
+    model: "gemini-2.5-flash",
+    contents: prompt
+  });
+
