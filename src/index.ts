@@ -28,7 +28,7 @@ app.post("/ai", async (req, res) => {
 
 app.post("/chat", async (req, res) => {
   chatResponse(req, res);
-})
+});
 
 app.listen(3000, () => {
   console.log("Server is running on port 3000");

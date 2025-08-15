@@ -2,7 +2,7 @@ import { geminiInternal } from "../adapters/gemini";
 import { generateText } from "./gemini";
 import { chat } from "./gemini";
 
-const context: any[] = [];
+const chatContext: any[] = [];
 
 export const ai = async (prompt: string) => {
 
@@ -12,33 +12,28 @@ export const ai = async (prompt: string) => {
   return response;
 };
 
-export const chatAi = async (prompt: string) => {
 
-  const input = {
-    role: "user",
+const chatItem = (role: string, text: string) => {
+  const data = {
+    role,
     parts: [
       {
-        text: prompt
+        text,
       }
     ]
-  }
+  };
+  chatContext.push(data);
+}
 
-  context.push(input);
+export const chatAiInteration = async (prompt: string) => {
 
-  const data = await chat(context);
-  console.log(data);
-  const { response } = geminiInternal(data); //desestruturação
+  chatItem("user", prompt);
+  const data = await chat(chatContext);
+  const { response } = geminiInternal(data);
+  chatItem("model", response);
 
-  const output = {
-    role: "model",
-    parts: [
-      {
-        text: response
-      }
-    ]
-  }
-
-  context.push(output);
-
-  return { response, context };
+  return {
+    response,
+    context: chatContext
+  };
 };
