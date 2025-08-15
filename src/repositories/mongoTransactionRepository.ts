@@ -16,7 +16,7 @@ export class MongoTransactionRepository implements TransactionRepository {
 
   async findAll(): Promise<Transaction[]> {
     const docs = await transactionModel.find();
-    return docs.map(doc => this.toEntity(doc));
+    return docs.map((doc: any) => this.toEntity(doc));
   };
 
   async findById(id: string): Promise<Transaction | null> {
