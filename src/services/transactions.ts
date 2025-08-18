@@ -1,4 +1,4 @@
-import { Transaction } from "../core/entities/Transaction";
+import { Transaction } from "../models/Transaction";
 import { TransactionRepository } from "../repositories/TransactionRepository";
 
 export class TransactionService {

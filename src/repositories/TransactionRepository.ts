@@ -1,4 +1,4 @@
-import { Transaction } from "../core/entities/Transaction";
+import { Transaction } from "../models/Transaction";
 
 export interface TransactionRepository {
   findAll(): Promise<Transaction[]>;

@@ -1,6 +1,6 @@
 import { TransactionService } from "../../src/services/transactions";
 import { TransactionRepository } from "../../src/repositories/TransactionRepository";
-import { Transaction } from "../../src/core/entities/Transaction";
+import { Transaction } from "../../src/models/Transaction";
 
 describe("TransactionService", () => {
   let repositoryMock: jest.Mocked<TransactionRepository>;
