@@ -2,7 +2,7 @@ import app from "./index";
 import { connectToMongo } from "./infra/database/mongoConnect";
 
 const URL = process.env.MONGO_URL || 'undefined';
-const PORT = process.env.PORT || 8080;
+const PORT = process.env.PORT || 3000;
 
 (async () => {
   try {
