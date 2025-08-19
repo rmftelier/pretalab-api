@@ -2,7 +2,6 @@ import request from "supertest";
 import app from "../../src/index";
 import mongoose from "mongoose";
 import { productModel } from "../../src/infra/database/models/productModel";
-import { Types } from "mongoose";
 
 describe("GET /products", () => {
 
@@ -29,6 +28,13 @@ describe("GET /products", () => {
 
     expect(response.status).toBe(200);
     expect(response.body).toHaveLength(2);
+
+    expect(response.body).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({ name: "Monitor", price: 899 }),
+        expect.objectContaining({ name: "Teclado", price: 199 }),
+      ])
+    );
   });
 
 });
