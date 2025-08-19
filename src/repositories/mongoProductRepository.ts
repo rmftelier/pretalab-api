@@ -1,21 +1,21 @@
-import { Product } from "../models/Product";
 import { ProductRepository } from "../repositories/ProductRepository";
-import { productModel } from "../infra/database/models/productModel";
+import { IProduct, productModel } from "../infra/database/models/productModel";
+import { Product } from "../models/Product";
 
 export class MongoProductRepository implements ProductRepository {
-  private toEntity(doc: any): Product {
+
+  private toEntity(doc: IProduct): Product {
     return {
+      id: doc._id.toString(),
       name: doc.name,
-      price: doc.price,
-      id: doc._id.toString()
+      price: doc.price
     }
   };
 
-  async findAll(): Promise<Product[]> {
-    const docs = await productModel.find();
-    return docs.map((doc: any) => this.toEntity(doc));
+  public async findAll(): Promise<Product[]> {
+    const products: IProduct[] = await productModel.find();
+
+    return products.map(this.toEntity);
   };
 
-
-
-}
+};
