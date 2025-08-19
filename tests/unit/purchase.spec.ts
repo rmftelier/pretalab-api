@@ -1,4 +1,4 @@
-import { Purchase } from "../../src/models/Purchase";
+import { Purchase, PurchaseItem } from "../../src/models/Purchase";
 import { PurchaseService } from "../../src/services/purchases";
 import { PurchaseRepository } from "../../src/repositories/PurchaseRepository";
 
@@ -9,7 +9,8 @@ describe("PurchaseService", () => {
   beforeEach(() => {
     repositoryMock = {
       findAll: jest.fn(),
-      findById: jest.fn()
+      findById: jest.fn(),
+      create: jest.fn()
     };
 
     service = new PurchaseService(repositoryMock);
@@ -57,7 +58,7 @@ describe("PurchaseService", () => {
     const purchase = await service.getById("1");
 
     expect(purchase).toEqual(fakePurchase);
-    
+
   });
 
   it("deve lançar erro se a compra não for encontrada", async () => {
@@ -65,4 +66,33 @@ describe("PurchaseService", () => {
 
     await expect(service.getById("999")).rejects.toThrow("Purchase not found");
   });
+
+  it("deve processar checkout corretamente com total válido", async () => {
+    const items: PurchaseItem[] = [
+      { productId: "123", quantity: 1, name: "Notebook", price: 5000 },
+      { productId: "456", quantity: 2, name: "Monitor", price: 300 }
+    ];
+
+    const mockPurchase = { id: "1234", total: 5600, items };
+
+    repositoryMock.create.mockResolvedValue(mockPurchase as Purchase);
+
+    const result = await service.checkout(items);
+
+    expect(result.total).toBe(5600);
+    expect(repositoryMock.create).toHaveBeenCalledWith({ total: 5600, items });
+  });
+
+  it("deve lançar erro se total ultrapassar R$20.000", async () => {
+    const items: PurchaseItem[] = [
+      { productId: "789", quantity: 1, name: "Servidor Caríssimo", price: 25000 }
+    ];
+
+    await expect(service.checkout(items))
+      .rejects
+      .toThrow("O valor total da compra excede o limite de R$20.000.");
+
+    expect(repositoryMock.create).not.toHaveBeenCalled();
+  });
+
 });
