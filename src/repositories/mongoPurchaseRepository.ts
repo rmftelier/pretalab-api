@@ -1,13 +1,13 @@
 import { PurchaseRepository } from "./PurchaseRepository";
 import { IPurchase, purchaseModel } from "../infra/database/models/purchaseModel";
-import { Purchase } from "../models/Purchase";
+import { Purchase, PurchaseItem } from "../models/Purchase";
 
 export class MongoPurchaseRepository implements PurchaseRepository {
 
   private toEntity(doc: IPurchase): Purchase {
     return {
       id: doc._id.toString(),
-      date: doc.date,
+      date: doc.date.toISOString(),
       total: doc.total,
       items: doc.items.map(item => ({
         productId: item.productId.toString(),
@@ -31,5 +31,12 @@ export class MongoPurchaseRepository implements PurchaseRepository {
 
     return this.toEntity(purchase);
   }
+
+  public async create(purchaseData: { total: number; items: PurchaseItem[] }): Promise<Purchase> {
+
+    const purchase = await purchaseModel.create(purchaseData);
+
+    return this.toEntity(purchase);
+  };
 
 };

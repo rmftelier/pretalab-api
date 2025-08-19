@@ -42,5 +42,6 @@ app.get("/products", (_req, res) => productController.getAllProducts(_req, res))
 app.get("/purchases", (_req, res) => purchaseController.getAllPurchases(_req, res));
 app.get("/purchases/:id", (req, res) => purchaseController.getPurchaseById(req, res));
 
+app.post("/checkout", (req, res) => purchaseController.createPurchase(req, res));
 
 export default app;
