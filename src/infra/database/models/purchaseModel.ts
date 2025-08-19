@@ -1,0 +1,31 @@
+import mongoose, { Schema, Document, Types } from "mongoose";
+
+export interface IPurchaseItem extends Document {
+  productId: Types.ObjectId;
+  quantity: number;
+  name: string;
+  price: number;
+}
+
+export interface IPurchase extends Document {
+  _id: Types.ObjectId;
+  date: string;
+  total: number;
+  items: IPurchaseItem[];
+}
+
+const purchaseItemSchema = new Schema<IPurchaseItem>({
+  productId: { type: Schema.Types.ObjectId, ref: "Product", required: true },
+  quantity: { type: Number, required: true },
+  name: { type: String, required: true },
+  price: { type: Number, required: true },
+});
+
+
+const purchaseSchema = new Schema<IPurchase>({
+  date: { type: String },
+  total: { type: Number, required: true },
+  items: [purchaseItemSchema]
+});
+
+export const purchaseModel = mongoose.model('Purchase', purchaseSchema);

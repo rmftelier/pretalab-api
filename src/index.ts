@@ -8,6 +8,9 @@ import { TransactionController } from "./controllers/transactions";
 import { ProductController } from "./controllers/product";
 import { ProductService } from "./services/products";
 import { MongoProductRepository } from "./repositories/mongoProductRepository";
+import { MongoPurchaseRepository } from "./repositories/mongoPurchaseRepository";
+import { PurchaseController } from "./controllers/purchase";
+import { PurchaseService } from "./services/purchases";
 
 dotenv.config();
 
@@ -24,11 +27,20 @@ const productRepository = new MongoProductRepository();
 const productService = new ProductService(productRepository);
 const productController = new ProductController(productService);
 
+const purchaseRepository = new MongoPurchaseRepository();
+const purchaseService = new PurchaseService(purchaseRepository);
+const purchaseController = new PurchaseController(purchaseService);
+
+
 app.get("/", (_req, res) => res.json({ message: "Transactions API" }));
 app.get("/transactions", (_req, res) => controller.getAllTransactions(_req, res));
 app.get("/transactions/:id", (req, res) => controller.getTransactionById(req, res));
 app.post("/transactions", (req, res) => controller.postTransaction(req, res));
 
 app.get("/products", (_req, res) => productController.getAllProducts(_req, res));
+
+app.get("/purchases", (_req, res) => purchaseController.getAllPurchases(_req, res));
+app.get("/purchases/:id", (req, res) => purchaseController.getPurchaseById(req, res));
+
 
 export default app;
