@@ -84,12 +84,6 @@ jobs:
           service: ${{ secrets.SERVICE_NAME }}
           region: ${{ secrets.SERVICE_REGION }}
           source: ./
-          env_vars: |
-            MONGO_URL=${{ secrets.MONGO_URL }}
-          env_vars_update_strategy: merge
-          secrets_update_strategy: merge
-          skip_default_labels: false
-          no_traffic: false
 
       - name: 📤 Show Output
         run: echo ${{ steps.deploy.outputs.url }}
