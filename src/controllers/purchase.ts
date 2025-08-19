@@ -13,9 +13,15 @@ export class PurchaseController {
   async getPurchaseById(req: Request, res: Response) {
     const { id } = req.params;
 
-    const purchase = await this.service.getById(id);
 
-    return res.status(200).json({ purchase });
+    try {
+      const purchase = await this.service.getById(id);
+      return res.status(200).json({ purchase });
+
+    } catch (error: any) {
+      return res.status(404).json({ message: error.message });
+    }
+
   };
 
 };

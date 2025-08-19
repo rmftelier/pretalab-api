@@ -4,12 +4,18 @@ import { PurchaseRepository } from "../repositories/PurchaseRepository";
 export class PurchaseService {
   constructor(private repository: PurchaseRepository) { }
 
-  public getAll(): Promise<Purchase[]> {
-    return this.repository.findAll();
-  }
+  public async getAll(): Promise<Purchase[]> {
+    return await this.repository.findAll();
+  };
 
-  public getById(id: string): Promise<Purchase | null> {
-    return this.repository.findById(id);
-  }
+  public async getById(id: string): Promise<Purchase | null> {
+    const purchase = await this.repository.findById(id);
+
+    if (!purchase) {
+      throw new Error('Purchase not found');
+    }
+
+    return purchase;
+  };
 
 };
