@@ -1,7 +1,7 @@
 import mongoose, { Schema, Document, Types } from "mongoose";
 
-export interface IPurchaseItem extends Document {
-  productId: Types.ObjectId;
+export interface IPurchaseItem {
+  productId: number;
   quantity: number;
   name: string;
   price: number;
@@ -15,12 +15,11 @@ export interface IPurchase extends Document {
 }
 
 const purchaseItemSchema = new Schema<IPurchaseItem>({
-  productId: { type: Schema.Types.ObjectId, ref: "Product", required: true },
+  productId: { type: Number, required: true },
   quantity: { type: Number, required: true },
   name: { type: String, required: true },
-  price: { type: Number, required: true },
+  price: { type: Number, required: true }
 });
-
 
 const purchaseSchema = new Schema<IPurchase>({
   date: { type: Date, default: Date.now },
@@ -28,4 +27,4 @@ const purchaseSchema = new Schema<IPurchase>({
   items: [purchaseItemSchema]
 });
 
-export const purchaseModel = mongoose.model('Purchase', purchaseSchema);
+export const purchaseModel = mongoose.model<IPurchase>('Purchase', purchaseSchema);

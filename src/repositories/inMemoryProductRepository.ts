@@ -5,7 +5,6 @@ export class InMemoryProductRepository implements ProductRepository {
 
   private registeredProducts: Product[] = products;
 
-
   public async findAll(): Promise<Product[]> {
     return this.registeredProducts;
   };

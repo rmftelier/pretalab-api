@@ -2,11 +2,11 @@ import request from "supertest";
 import app from "../../src/index";
 import mongoose from "mongoose";
 import { purchaseModel } from "../../src/infra/database/models/purchaseModel";
-import { productModel } from "../../src/infra/database/models/productModel";
 
 describe("GET /purchases", () => {
-  let product1Id: string;
-  let product2Id: string;
+
+  let purchaseId: string;
+  let secondPurchaseId: string;
 
   beforeAll(async () => {
     await mongoose.connect(process.env.MONGO_URL_TEST!);
@@ -17,59 +17,58 @@ describe("GET /purchases", () => {
   });
 
   beforeEach(async () => {
-    // Limpar coleções
     await purchaseModel.deleteMany({});
-    await productModel.deleteMany({});
 
-    // Criar produtos de teste
-    const products = await productModel.create([
-      { name: "Notebook", price: 5000 },
-      { name: "Mouse", price: 200 },
-    ]);
 
-    product1Id = products[0]._id.toString();
-    product2Id = products[1]._id.toString();
-
-    // Criar compras de teste
-    await purchaseModel.create([
-      {
-        total: 5200,
+    const createPurchase = await request(app)
+      .post("/checkout")
+      .send({
         items: [
-          {
-            productId: products[0]._id,
-            name: products[0].name,
-            price: products[0].price,
-            quantity: 1,
-          },
-          {
-            productId: products[1]._id,
-            name: products[1].name,
-            price: products[1].price,
-            quantity: 1,
-          },
-        ],
-      },
-    ]);
+          { id: 1, quantity: 1 },
+          { id: 2, quantity: 2 },
+        ]
+      });
+
+    purchaseId = createPurchase.body.id;
+
+    const createSecondPurchase = await request(app)
+      .post("/checkout")
+      .send({
+        items: [
+          { id: 3, quantity: 3 },
+          { id: 4, quantity: 2 },
+        ]
+      });
+
+    secondPurchaseId = createSecondPurchase.body.id;
   });
 
-  it("should return all purchases", async () => {
+  it("deve retornar todas as compras", async () => {
+
     const response = await request(app).get("/purchases");
 
     expect(response.status).toBe(200);
-    expect(response.body).toHaveLength(1);
+    expect(response.body).toHaveLength(2);
 
-    // Testa que o array contém pelo menos um objeto que bate com o esperado
-    expect(response.body).toEqual(
-      expect.arrayContaining([
-        expect.objectContaining({
-          total: 5200,
-          items: expect.arrayContaining([
-            expect.objectContaining({ name: "Notebook", price: 5000, quantity: 1 }),
-            expect.objectContaining({ name: "Mouse", price: 200, quantity: 1 }),
-          ]),
-        }),
-      ])
-    );
+    expect(response.body).toMatchObject([
+      {
+        id: purchaseId,
+        date: expect.any(String),
+        total: 8200,
+        items: [
+          { productId: 1, quantity: 1, name: "Notebook Gamer Pro", price: 7500 },
+          { productId: 2, quantity: 2, name: "Mouse Sem Fio Ultra-leve", price: 350 },
+        ]
+      },
+      {
+        id: secondPurchaseId,
+        date: expect.any(String),
+        total: 6650,
+        items: [
+          { productId: 3, quantity: 3, name: "Teclado Mecânico RGB", price: 550 },
+          { productId: 4, quantity: 2, name: "Monitor 4K 27\"", price: 2500 },
+        ]
+      }
+    ]);
   });
-
 });
