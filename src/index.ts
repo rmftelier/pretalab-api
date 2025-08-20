@@ -7,7 +7,7 @@ import { TransactionService } from "./services/transactions";
 import { TransactionController } from "./controllers/transactions";
 import { ProductController } from "./controllers/product";
 import { ProductService } from "./services/products";
-import { MongoProductRepository } from "./repositories/mongoProductRepository";
+import { InMemoryProductRepository } from "./repositories/inMemoryProductRepository";
 import { MongoPurchaseRepository } from "./repositories/mongoPurchaseRepository";
 import { PurchaseController } from "./controllers/purchase";
 import { PurchaseService } from "./services/purchases";
@@ -23,7 +23,7 @@ const repository = new MongoTransactionRepository();
 const service = new TransactionService(repository);
 const controller = new TransactionController(service);
 
-const productRepository = new MongoProductRepository();
+const productRepository = new InMemoryProductRepository();
 const productService = new ProductService(productRepository);
 const productController = new ProductController(productService);
 
