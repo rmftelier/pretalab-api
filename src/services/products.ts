@@ -6,6 +6,5 @@ export class ProductService {
 
   public getAll(): Promise<Product[]> {
     return this.repository.findAll();
-  }
-
+  }  
 };
