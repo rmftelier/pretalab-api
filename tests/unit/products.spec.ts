@@ -2,12 +2,12 @@ import { Product } from "../../src/models/Product";
 import { ProductService } from "../../src/services/products";
 import { ProductRepository } from "../../src/repositories/ProductRepository";
 
+
 describe("ProductService", () => {
   let repositoryMock: jest.Mocked<ProductRepository>;
   let service: ProductService;
 
   beforeEach(() => {
-    //Cria um mock com todos os métodos do repositório
     repositoryMock = {
       findAll: jest.fn(),
     };
@@ -18,12 +18,12 @@ describe("ProductService", () => {
   it("deve retornar todos os produtos", async () => {
     const fakeProducts: Product[] = [
       {
-        id: "1",
+        id: 1,
         name: "Teclado",
         price: 300
       },
       {
-        id: "2",
+        id: 2,
         name: "Monitor",
         price: 3000
       },
