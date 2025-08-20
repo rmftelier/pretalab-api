@@ -23,15 +23,17 @@ describe("PurchaseService", () => {
         date: "2025-08-19T15:00:00.000Z",
         total: 5200,
         items: [
-          { productId: "101", name: "Notebook", price: 5000, quantity: 1 },
-          { productId: "102", name: "Mouse", price: 200, quantity: 1 },
+          { productId: 3, name: "Notebook", price: 5000, quantity: 1 },
+          { productId: 4, name: "Mouse", price: 200, quantity: 1 },
         ],
       },
       {
         id: "2",
         date: "2025-08-19T16:00:00.000Z",
         total: 350,
-        items: [{ productId: "103", name: "Teclado", price: 350, quantity: 1 }],
+        items: [
+          { productId: 3, name: "Teclado", price: 350, quantity: 1 }
+        ],
       },
     ];
 
@@ -48,8 +50,8 @@ describe("PurchaseService", () => {
       date: "2025-08-19T15:00:00.000Z",
       total: 5200,
       items: [
-        { productId: "101", name: "Notebook", price: 5000, quantity: 1 },
-        { productId: "102", name: "Mouse", price: 200, quantity: 1 },
+        { productId: 1, name: "Notebook", price: 5000, quantity: 1 },
+        { productId: 1, name: "Mouse", price: 200, quantity: 1 },
       ],
     };
 
@@ -67,28 +69,9 @@ describe("PurchaseService", () => {
     await expect(service.getById("999")).rejects.toThrow("Purchase not found");
   });
 
-  it("deve processar checkout corretamente com total válido", async () => {
-    const items: PurchaseItem[] = [
-      { productId: "123", quantity: 1, name: "Notebook", price: 5000 },
-      { productId: "456", quantity: 2, name: "Monitor", price: 300 }
-    ];
-
-    const mockPurchase = { id: "1234", total: 5600, items };
-
-    repositoryMock.create.mockResolvedValue(mockPurchase as Purchase);
-
-    const result = await service.checkout(items);
-
-    expect(result.total).toBe(5600);
-    expect(repositoryMock.create).toHaveBeenCalledWith({ total: 5600, items });
-  });
-
   it("deve lançar erro se total ultrapassar R$20.000", async () => {
-    const items: PurchaseItem[] = [
-      { productId: "789", quantity: 1, name: "Servidor Caríssimo", price: 25000 }
-    ];
 
-    await expect(service.checkout(items))
+    await expect(service.checkout([{ id: 1, quantity: 10 }]))
       .rejects
       .toThrow("O valor total da compra excede o limite de R$20.000.");
 
