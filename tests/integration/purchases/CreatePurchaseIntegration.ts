@@ -23,13 +23,13 @@ describe("POST /checkout", () => {
       .send({
         "items": [
           {
-            "productId": 3,
+            "productId": "3",
             "quantity": 2,
             "name": "Teclado Mecânico RGB",
             "price": 550
           },
           {
-            "productId": 4,
+            "productId": "4",
             "quantity": 3,
             "name": "Monitor 4K 27\"",
             "price": 2500
@@ -44,8 +44,8 @@ describe("POST /checkout", () => {
       date: expect.any(String),
       total: 8600,
       items: [
-        { productId: 3, quantity: 2, name: "Teclado Mecânico RGB", price: 550 },
-        { productId: 4, quantity: 3, name: "Monitor 4K 27\"", price: 2500 }
+        { productId: "3", quantity: 2, name: "Teclado Mecânico RGB", price: 550 },
+        { productId: "4", quantity: 3, name: "Monitor 4K 27\"", price: 2500 }
       ],
     });
 
@@ -57,7 +57,7 @@ describe("POST /checkout", () => {
       .send({
         "items": [
           {
-            "productId": 4,
+            "productId": "4",
             "quantity": 10,
             "name": "Monitor 4K 27\"",
             "price": 2500

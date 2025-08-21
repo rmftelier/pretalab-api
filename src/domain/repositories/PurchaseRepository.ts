@@ -1,7 +1,7 @@
-import { Purchase, PurchaseItem } from "../models/Purchase";
+import { Purchase } from "../models/Purchase";
 
 export interface PurchaseRepository {
-  create(purchaseData: { total: number; items: { productId: number; quantity: number }[] }): Promise<Purchase>;
+  create(data: Omit<Purchase, "id">): Promise<Purchase>;
   findAll(): Promise<Purchase[]>;
   findById(id: string): Promise<Purchase | null>;
 }
