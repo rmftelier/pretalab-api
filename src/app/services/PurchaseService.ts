@@ -1,13 +1,17 @@
-import { Purchase, PurchaseItem } from "../../domain/models/Purchase";
-import { InMemoryProductRepository } from "../../infra/database/repositories/InMemoryProductRepository";
+import { DataPurchase, Purchase } from "../../domain/models/Purchase";
 import { PurchaseRepository } from "../../domain/repositories/PurchaseRepository";
 
 export class PurchaseService {
-  private productRepository = new InMemoryProductRepository();
 
   constructor(private repository: PurchaseRepository) { }
 
   public async getAll(): Promise<Purchase[]> {
+    const purchases = await this.repository.findAll();
+
+    if (!purchases) {
+      throw new Error("Compras não encontradas.");
+    }
+
     return await this.repository.findAll();
   };
 
@@ -15,41 +19,35 @@ export class PurchaseService {
     const purchase = await this.repository.findById(id);
 
     if (!purchase) {
-      throw new Error('Purchase not found');
+      throw new Error('Compra com o id informado não foi encontrada.');
     }
 
     return purchase;
   };
 
-  public async checkout(productIds: { id: number; quantity: number }[]): Promise<Purchase> {
+  public async checkout(data: DataPurchase): Promise<Purchase> {
 
-    const products = await this.productRepository.findAll();
+    if (!data.items || data.items.length === 0) {
+      throw new Error("A compra deve ter pelo menos 1 item.");
+    }
 
-    const items: PurchaseItem[] = productIds.map(({ id, quantity }) => {
-      const product = products.find((p) => p.id === id);
-
-      if (!product) {
-        throw new Error(`Produto com o id ${id} não foi encontrado`);
-      };
-
-      return {
-        productId: product.id,
-        quantity,
-        name: product.name,
-        price: product.price
-      };
-    });
-
-    const total = items.reduce((sum, item) => sum + item.price * item.quantity, 0);
+    const total = data.items.reduce(
+      (soma, item) => soma + item.price * item.quantity, 0
+    );
 
     if (total > 20000) {
       throw new Error("O valor total da compra excede o limite de R$20.000.");
     }
 
-    const savedPurchase = await this.repository.create({ total, items });
+    const purchaseToSave = {
+      date: new Date().toISOString(),
+      total,
+      ...data
+    }
 
-    return savedPurchase;
+    const createPurchase = await this.repository.create(purchaseToSave);
 
+    return createPurchase;
   }
 
 };

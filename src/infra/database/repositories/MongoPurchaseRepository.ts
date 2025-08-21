@@ -1,7 +1,6 @@
 import { PurchaseRepository } from "../../../domain/repositories/PurchaseRepository";
 import { IPurchase, purchaseModel } from "../../../infra/database/models/purchaseModel";
 import { Purchase } from "../../../domain/models/Purchase";
-import { products } from "../../../domain/models/Product";
 
 export class MongoPurchaseRepository implements PurchaseRepository {
 
@@ -26,27 +25,16 @@ export class MongoPurchaseRepository implements PurchaseRepository {
   };
 
   public async findById(id: string): Promise<Purchase | null> {
-    const purchase = await purchaseModel.findById(id);
+    const purchase = await purchaseModel.findOne({ _id: id });
 
-    if (!purchase) return null;
-
-    return this.toEntity(purchase);
+    return purchase ? this.toEntity(purchase) : null;
   }
 
-  public async create(purchaseData: { total: number; items: { productId: number; quantity: number }[] }): Promise<Purchase> {
+  public async create(data: Omit<Purchase, "id">): Promise<Purchase> {
 
-    const itemsWithDetails = purchaseData.items.map(item => {
-      const product = products.find(p => p.id === item.productId)!;
-      return {
-        ...item,
-        name: product.name,
-        price: product.price,
-      };
-    });
+    const createPurchase = await purchaseModel.create(data);
 
-    const purchase = await purchaseModel.create({ ...purchaseData, items: itemsWithDetails });
-
-    return this.toEntity(purchase);
+    return this.toEntity(createPurchase);
   };
 
 };

@@ -5,6 +5,7 @@ export class TransactionController {
   constructor(private service: TransactionService) { }
 
   public async getAllTransactions(req: Request, res: Response) {
+
     try {
       const transactions = await this.service.getAll();
       return res.status(200).json(transactions);

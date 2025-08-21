@@ -10,5 +10,9 @@ export interface Purchase {
   date: string;
   total: number;
   items: PurchaseItem[];
+};
 
+
+export interface DataPurchase {
+  items: PurchaseItem[];
 };

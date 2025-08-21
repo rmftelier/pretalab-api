@@ -7,7 +7,6 @@ export interface Transaction {
   category: string;
 };
 
-
 export interface DataTransaction {
   date: string;
   description: string;
