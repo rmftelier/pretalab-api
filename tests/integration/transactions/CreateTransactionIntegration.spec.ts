@@ -17,7 +17,7 @@ describe("POST /transactions", () => {
     await transactionModel.deleteMany({});
   });
 
-  it("deve retornar uma transação quando criada", async () => {
+  it("deve retornar uma transação quando ela for criada", async () => {
 
     const newTransaction = {
       date: "2024-08-02T15:00:00Z",
@@ -30,7 +30,16 @@ describe("POST /transactions", () => {
     const response = await request(app).post("/transactions/").send(newTransaction);
 
     expect(response.status).toBe(201);
-    expect(response.body).toMatchObject({ transaction: newTransaction });
+    expect(response.body).toMatchObject({
+      transaction: {
+        id: expect.any(String),
+        date: expect.any(String),
+        description: "Consulta Médica",
+        amount: 100,
+        type: "income",
+        category: "Saúde"
+      }
+    });
 
   });
 

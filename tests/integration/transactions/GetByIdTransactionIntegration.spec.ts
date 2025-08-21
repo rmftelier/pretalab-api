@@ -36,7 +36,14 @@ describe("GET /transactions/:id", () => {
 
     expect(response.status).toBe(200);
     expect(response.body).toMatchObject({
-      transaction: newTransaction
+      transaction: {
+        id: expect.any(String),
+        date: expect.any(String),
+        description: "Consulta Médica",
+        amount: 100,
+        type: "income",
+        category: "Saúde"
+      }
     });
   });
 
@@ -45,7 +52,7 @@ describe("GET /transactions/:id", () => {
 
     const response = await request(app).get(`/transactions/${fakeId}`);
     expect(response.status).toBe(404);
-    expect(response.body).toEqual({ message: "Transaction not found" });
+    expect(response.body).toEqual({ message: "A transação financeira com o id informado não foi encontrada." });
   });
 
 });

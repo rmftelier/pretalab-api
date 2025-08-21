@@ -20,7 +20,7 @@ export class TransactionService {
     const transaction = await this.repository.findById(id);
 
     if (!transaction) {
-      throw new Error("A transação financeira com o id informado não foi encontrado.");
+      throw new Error("A transação financeira com o id informado não foi encontrada.");
     }
 
     return this.repository.findById(id);

@@ -1,13 +1,12 @@
 import { TransactionService } from "../../../src/app/services/TransactionService";
 import { TransactionRepository } from "../../../src/domain/repositories/TransactionRepository";
-import { Transaction } from "../../../src/domain/models/Transaction";
+import { Transaction, DataTransaction } from "../../../src/domain/models/Transaction";
 
 describe("TransactionService", () => {
   let repositoryMock: jest.Mocked<TransactionRepository>;
   let service: TransactionService;
 
   beforeEach(() => {
-    //Cria um mock com todos os métodos do repositório
     repositoryMock = {
       findAll: jest.fn(),
       findById: jest.fn(),
@@ -35,17 +34,18 @@ describe("TransactionService", () => {
 
   });
 
-  it("deve retornar null quando a transação não for encontrada", async () => {
+  it("deve retornar uma mensagem de erro quando a transação não for encontrada", async () => {
     repositoryMock.findById.mockResolvedValue(null);
 
-    const result = await service.getById("99");
+    await expect(service.getById("99"))
+      .rejects
+      .toThrow("A transação financeira com o id informado não foi encontrada.");
 
     expect(repositoryMock.findById).toHaveBeenCalledWith("99");
-    expect(result).toBeNull();
   });
 
   it("deve criar uma transação chamando o repositório corretamente", async () => {
-    const fakeTransaction: Transaction = {
+    const transactionData: DataTransaction = {
       date: "2024-08-02T15:00:00Z",
       description: "Show do BTS",
       amount: 1000,
@@ -53,12 +53,17 @@ describe("TransactionService", () => {
       category: "Lazer"
     };
 
-    repositoryMock.create.mockResolvedValue(fakeTransaction);
+    const createdTransaction: Transaction = {
+      id: "1",
+      ...transactionData
+    };
 
-    const result = await service.create(fakeTransaction);
+    repositoryMock.create.mockResolvedValue(createdTransaction);
 
-    expect(repositoryMock.create).toHaveBeenCalledWith(fakeTransaction);
-    expect(result).toEqual(fakeTransaction);
+    const result = await service.create(transactionData);
+
+    expect(repositoryMock.create).toHaveBeenCalledWith(transactionData);
+    expect(result).toEqual(createdTransaction);
   });
 
-})
+});
