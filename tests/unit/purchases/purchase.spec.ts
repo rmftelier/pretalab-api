@@ -1,6 +1,6 @@
-import { Purchase, PurchaseItem } from "../../src/models/Purchase";
-import { PurchaseService } from "../../src/services/purchases";
-import { PurchaseRepository } from "../../src/repositories/PurchaseRepository";
+import { Purchase, PurchaseItem } from "../../../src/domain/models/Purchase";
+import { PurchaseService } from "../../../src/app/services/PurchaseService";
+import { PurchaseRepository } from "../../../src/domain/repositories/PurchaseRepository";
 
 describe("PurchaseService", () => {
   let repositoryMock: jest.Mocked<PurchaseRepository>;

@@ -1,7 +1,7 @@
 import request from "supertest";
-import app from "../../src/index";
+import app from "../../../src/app";
 import mongoose from "mongoose";
-import { transactionModel } from "../../src/infra/database/models/transactionModel";
+import { transactionModel } from "../../../src/infra/database/models/transactionModel";
 import { Types } from "mongoose";
 
 describe("GET /transactions/:id", () => {
@@ -18,7 +18,7 @@ describe("GET /transactions/:id", () => {
     await transactionModel.deleteMany({});
   });
 
-  it("should return a transaction when ID exists", async () => {
+  it("deve retornar uma transação correspondente ao id informado", async () => {
 
     const newTransaction = {
       date: "2024-08-02T15:00:00Z",
@@ -40,7 +40,7 @@ describe("GET /transactions/:id", () => {
     });
   });
 
-  it("should return a 404 when transaction is not found", async () => {
+  it("deve retornar um erro 404 quando a transação não é encontrada", async () => {
     const fakeId = new Types.ObjectId();
 
     const response = await request(app).get(`/transactions/${fakeId}`);

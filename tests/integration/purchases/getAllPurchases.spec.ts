@@ -1,7 +1,7 @@
 import request from "supertest";
-import app from "../../src/index";
+import app from "../../../src/app";
 import mongoose from "mongoose";
-import { purchaseModel } from "../../src/infra/database/models/purchaseModel";
+import { purchaseModel } from "../../../src/infra/database/models/purchaseModel";
 
 describe("GET /purchases", () => {
 

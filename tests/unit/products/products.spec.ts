@@ -1,7 +1,6 @@
-import { Product } from "../../src/models/Product";
-import { ProductService } from "../../src/services/products";
-import { ProductRepository } from "../../src/repositories/ProductRepository";
-
+import { Product } from "../../../src/domain/models/Product";
+import { ProductService } from "../../../src/app/services/ProductService";
+import { ProductRepository } from "../../../src/domain/repositories/ProductRepository";
 
 describe("ProductService", () => {
   let repositoryMock: jest.Mocked<ProductRepository>;

@@ -1,6 +1,6 @@
 import request from "supertest";
-import app from "../../src/index";
-import { products } from "../../src/models/Product";
+import app from "../../../src/app";
+import { products } from "../../../src/domain/models/Product";
 
 describe("GET /products", () => {
 

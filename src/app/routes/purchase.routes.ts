@@ -1,4 +1,4 @@
-import { MongoPurchaseRepository } from "../../infra/database/repositories/mongoPurchaseRepository";
+import { MongoPurchaseRepository } from "../../infra/database/repositories/MongoPurchaseRepository";
 import { PurchaseController } from "../controllers/PurchaseController";
 import { PurchaseService } from "../services/PurchaseService";
 import { Router } from "express";

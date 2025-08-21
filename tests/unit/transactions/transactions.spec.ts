@@ -1,6 +1,6 @@
-import { TransactionService } from "../../src/services/transactions";
-import { TransactionRepository } from "../../src/repositories/TransactionRepository";
-import { Transaction } from "../../src/models/Transaction";
+import { TransactionService } from "../../../src/app/services/TransactionService";
+import { TransactionRepository } from "../../../src/domain/repositories/TransactionRepository";
+import { Transaction } from "../../../src/domain/models/Transaction";
 
 describe("TransactionService", () => {
   let repositoryMock: jest.Mocked<TransactionRepository>;
@@ -27,10 +27,8 @@ describe("TransactionService", () => {
       category: "Saúde",
     };
 
-    //Simula que o repositório retorna essa transação quando buscar pelo ID
     repositoryMock.findById.mockResolvedValue(fakeTransaction);
 
-    //Executa o método
     const correspondingTransaction = await service.getById("1");
 
     expect(correspondingTransaction).toEqual(fakeTransaction);

@@ -1,7 +1,7 @@
 import request from "supertest";
-import app from "../../src/index";
+import app from "../../../src/app";
 import mongoose from "mongoose";
-import { transactionModel } from "../../src/infra/database/models/transactionModel";
+import { transactionModel } from "../../../src/infra/database/models/transactionModel";
 
 describe("POST /transactions", () => {
 
@@ -17,7 +17,7 @@ describe("POST /transactions", () => {
     await transactionModel.deleteMany({});
   });
 
-  it("should return a transaction when created", async () => {
+  it("deve retornar uma transação quando criada", async () => {
 
     const newTransaction = {
       date: "2024-08-02T15:00:00Z",

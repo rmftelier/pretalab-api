@@ -1,8 +1,8 @@
 import request from "supertest";
-import app from "../../src/index";
+import app from "../../../src/app";
 import mongoose from "mongoose";
-import { purchaseModel } from "../../src/infra/database/models/purchaseModel";
-import { products } from "../../src/models/Product";
+import { purchaseModel } from "../../../src/infra/database/models/purchaseModel";
+import { products } from "../../../src/domain/models/Product";
 import { Types } from "mongoose";
 
 describe("GET /purchases/:id", () => {
