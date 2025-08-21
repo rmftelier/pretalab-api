@@ -12,7 +12,12 @@ export interface Purchase {
   items: PurchaseItem[];
 };
 
-
 export interface DataPurchase {
   items: PurchaseItem[];
 };
+
+export interface CreatePurchase {
+  date: string;
+  total: number;
+  items: PurchaseItem[];
+}

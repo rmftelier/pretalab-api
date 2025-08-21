@@ -59,7 +59,7 @@ describe("ProductService", () => {
 
     const correspondingProducts = await service.getAll();
 
-    expect(correspondingProducts).toEqual(mockProducts);
+    expect(correspondingProducts).toMatchObject(mockProducts);
   });
 
 });

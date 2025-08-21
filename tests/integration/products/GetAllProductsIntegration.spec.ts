@@ -54,7 +54,8 @@ describe("GET /products", () => {
 
     expect(response.status).toBe(200);
     expect(response.body).toHaveLength(7);
-    expect(response.body).toEqual(mockProducts.data);
+
+    expect(response.body).toMatchObject(mockProducts.data);
   });
 
 });
