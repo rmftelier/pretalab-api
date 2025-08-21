@@ -1,7 +1,7 @@
-import { Transaction } from "../models/Transaction";
+import { Transaction, DataTransaction } from "../models/Transaction";
 
 export interface TransactionRepository {
   findAll(): Promise<Transaction[]>;
   findById(id: string): Promise<Transaction | null>;
-  create(transaction: Transaction): Promise<Transaction>;
+  create(data: DataTransaction): Promise<Transaction>;
 }

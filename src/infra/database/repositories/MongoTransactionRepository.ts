@@ -1,34 +1,36 @@
-import { Transaction } from "../../../domain/models/Transaction";
+import { Transaction, DataTransaction} from "../../../domain/models/Transaction";
 import { TransactionRepository } from "../../../domain/repositories/TransactionRepository";
-import { transactionModel } from "../../../infra/database/models/transactionModel";
+import { ITransaction, transactionModel } from "../../../infra/database/models/transactionModel";
 
 export class MongoTransactionRepository implements TransactionRepository {
-  private toEntity(doc: any): Transaction {
+  private toEntity(doc: ITransaction): Transaction {
     return {
-      date: doc.date,
+      id: doc._id.toString(),
+      date: doc.date.toISOString(),
       description: doc.description,
       amount: doc.amount,
       type: doc.type,
       category: doc.category,
-      id: doc._id.toString()
     }
   };
 
-  async findAll(): Promise<Transaction[]> {
-    const docs = await transactionModel.find();
-    return docs.map((doc: any) => this.toEntity(doc));
+  public async findAll(): Promise<Transaction[]> {
+
+    const transactions: ITransaction[] = await transactionModel.find();
+
+    return transactions.map(this.toEntity);
   };
 
-  async findById(id: string): Promise<Transaction | null> {
-    const doc = await transactionModel.findOne({ _id: id });
+  public async findById(id: string): Promise<Transaction | null> {
+    const transaction = await transactionModel.findOne({ _id: id });
 
-    return doc ? this.toEntity(doc) : null;
+    return transaction ? this.toEntity(transaction) : null;
   };
 
-  async create(transaction: Transaction): Promise<Transaction> {
-    const doc = await transactionModel.create(transaction);
+  public async create(data: DataTransaction): Promise<Transaction> {
+    const transaction = await transactionModel.create(data);
 
-    return this.toEntity(doc);
+    return this.toEntity(transaction);
   };
 
 }
