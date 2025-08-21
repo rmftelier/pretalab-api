@@ -1,23 +1,13 @@
-import { Product } from "../../../src/domain/models/Product";
-import { ProductService } from "../../../src/app/services/ProductService";
-import { ProductRepository } from "../../../src/domain/repositories/ProductRepository";
+import request from "supertest";
+import app from "../../../src/app";
+import nock from "nock";
 
-describe("ProductService", () => {
-  let repositoryMock: jest.Mocked<ProductRepository>;
-  let service: ProductService;
-
-  beforeEach(() => {
-    repositoryMock = {
-      findAll: jest.fn(),
-    };
-
-    service = new ProductService(repositoryMock);
-  });
+describe("GET /products", () => {
 
   it("deve retornar todos os produtos", async () => {
 
-    const mockProducts: Product[] =
-      [
+    const mockProducts = {
+      data: [
         {
           "id": "1",
           "name": "Notebook Gamer Pro",
@@ -54,13 +44,22 @@ describe("ProductService", () => {
           "price": 800
         }
       ]
+    }
 
-    repositoryMock.findAll.mockResolvedValue(mockProducts);
+    nock("https://pretalab-api-439254010866.us-central1.run.app")
+      .get("/products")
+      .reply(200, mockProducts);
 
-    const correspondingProducts = await service.getAll();
+    const response = await request(app).get(`/products`);
 
-    expect(correspondingProducts).toMatchObject(mockProducts);
+    expect(response.status).toBe(200);
+    expect(response.body).toMatchObject(mockProducts.data);
   });
 
 });
+
+
+
+
+
 

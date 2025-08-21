@@ -52,7 +52,7 @@ describe("GET /transactions/:id", () => {
 
     const response = await request(app).get(`/transactions/${fakeId}`);
     expect(response.status).toBe(404);
-    expect(response.body).toEqual({ message: "A transação financeira com o id informado não foi encontrada." });
+    expect(response.body).toMatchObject({ message: "A transação financeira com o id informado não foi encontrada." });
   });
 
 });

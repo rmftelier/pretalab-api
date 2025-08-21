@@ -1,7 +1,7 @@
 import mongoose, { Schema, Document, Types } from "mongoose";
 
 export interface IPurchaseItem {
-  productId: number;
+  productId: string;
   quantity: number;
   name: string;
   price: number;
@@ -15,7 +15,7 @@ export interface IPurchase extends Document {
 }
 
 const purchaseItemSchema = new Schema<IPurchaseItem>({
-  productId: { type: Number, required: true },
+  productId: { type: String, required: true },
   quantity: { type: Number, required: true },
   name: { type: String, required: true },
   price: { type: Number, required: true }

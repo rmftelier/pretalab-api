@@ -4,7 +4,10 @@ import { Product } from "../../domain/models/Product";
 export class ProductService {
   constructor(private repository: ProductRepository) { }
 
-  public getAll(): Promise<Product[]> {
-    return this.repository.findAll();
+  public async getAll(): Promise<Product[]> {
+    
+    const products = await this.repository.findAll();
+
+    return products;
   }  
 };

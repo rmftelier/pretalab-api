@@ -1,6 +1,6 @@
 import { PurchaseRepository } from "../../../domain/repositories/PurchaseRepository";
 import { IPurchase, purchaseModel } from "../../../infra/database/models/purchaseModel";
-import { Purchase } from "../../../domain/models/Purchase";
+import { CreatePurchaseDTO, Purchase } from "../../../domain/models/Purchase";
 
 export class MongoPurchaseRepository implements PurchaseRepository {
 
@@ -30,7 +30,7 @@ export class MongoPurchaseRepository implements PurchaseRepository {
     return purchase ? this.toEntity(purchase) : null;
   }
 
-  public async create(data: Omit<Purchase, "id">): Promise<Purchase> {
+  public async create(data: CreatePurchaseDTO): Promise<Purchase> {
 
     const createPurchase = await purchaseModel.create(data);
 
