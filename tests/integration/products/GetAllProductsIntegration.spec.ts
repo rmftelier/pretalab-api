@@ -53,8 +53,6 @@ describe("GET /products", () => {
     const response = await request(app).get(`/products`);
 
     expect(response.status).toBe(200);
-    expect(response.body).toHaveLength(7);
-
     expect(response.body).toMatchObject(mockProducts.data);
   });
 

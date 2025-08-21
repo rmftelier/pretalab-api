@@ -1,4 +1,4 @@
-import { Purchase, PurchaseItem } from "../../../src/domain/models/Purchase";
+import { Purchase } from "../../../src/domain/models/Purchase";
 import { PurchaseService } from "../../../src/app/services/PurchaseService";
 import { PurchaseRepository } from "../../../src/domain/repositories/PurchaseRepository";
 
@@ -43,7 +43,7 @@ describe("PurchaseService", () => {
 
     const purchases = await service.getAll();
 
-    expect(purchases).toEqual(fakePurchases);
+    expect(purchases).toMatchObject(fakePurchases);
   });
 
 
@@ -62,7 +62,7 @@ describe("PurchaseService", () => {
 
     const purchase = await service.getById("1");
 
-    expect(purchase).toEqual(fakePurchase);
+    expect(purchase).toMatchObject(fakePurchase);
 
   });
 

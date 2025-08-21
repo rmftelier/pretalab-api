@@ -1,4 +1,4 @@
-import { DataPurchase, Purchase } from "../../domain/models/Purchase";
+import { PurchaseInputDTO, Purchase } from "../../domain/models/Purchase";
 import { PurchaseRepository } from "../../domain/repositories/PurchaseRepository";
 
 export class PurchaseService {
@@ -25,7 +25,7 @@ export class PurchaseService {
     return purchase;
   };
 
-  public async checkout(data: DataPurchase): Promise<Purchase> {
+  public async checkout(data: PurchaseInputDTO): Promise<Purchase> {
 
     if (!data.items || data.items.length === 0) {
       throw new Error("A compra deve ter pelo menos 1 item.");

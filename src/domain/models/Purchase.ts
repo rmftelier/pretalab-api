@@ -1,4 +1,4 @@
-export interface PurchaseItem {
+export interface Item {
   productId: string;
   quantity: number;
   name: string;
@@ -9,15 +9,15 @@ export interface Purchase {
   id: string;
   date: string;
   total: number;
-  items: PurchaseItem[];
+  items: Item[];
 };
 
-export interface DataPurchase {
-  items: PurchaseItem[];
+export interface PurchaseInputDTO {
+  items: Item[];
 };
 
-export interface CreatePurchase {
+export interface CreatePurchaseDTO {
   date: string;
   total: number;
-  items: PurchaseItem[];
+  items: Item[];
 }

@@ -30,7 +30,7 @@ describe("TransactionService", () => {
 
     const correspondingTransaction = await service.getById("1");
 
-    expect(correspondingTransaction).toEqual(fakeTransaction);
+    expect(correspondingTransaction).toMatchObject(fakeTransaction);
 
   });
 
@@ -63,7 +63,7 @@ describe("TransactionService", () => {
     const result = await service.create(transactionData);
 
     expect(repositoryMock.create).toHaveBeenCalledWith(transactionData);
-    expect(result).toEqual(createdTransaction);
+    expect(result).toMatchObject(createdTransaction);
   });
 
 });

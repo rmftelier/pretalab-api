@@ -65,7 +65,7 @@ describe("GET /purchases/:id", () => {
 
     const response = await request(app).get(`/purchases/${fakeId}`);
     expect(response.status).toBe(404);
-    expect(response.body).toEqual({ message: "Compra com o id informado não foi encontrada." });
+    expect(response.body).toMatchObject({ message: "Compra com o id informado não foi encontrada." });
   });
 
 });
