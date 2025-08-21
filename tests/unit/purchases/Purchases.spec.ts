@@ -17,25 +17,27 @@ describe("PurchaseService", () => {
   });
 
   it("deve retornar todas as compras", async () => {
+
     const fakePurchases: Purchase[] = [
       {
         id: "1",
         date: "2025-08-19T15:00:00.000Z",
-        total: 5200,
+        total: 8200,
         items: [
-          { productId: 3, name: "Notebook", price: 5000, quantity: 1 },
-          { productId: 4, name: "Mouse", price: 200, quantity: 1 },
-        ],
+          { productId: 1, quantity: 1, name: "Notebook Gamer Pro", price: 7500 },
+          { productId: 2, quantity: 2, name: "Mouse Sem Fio Ultra-leve", price: 350 },
+        ]
       },
       {
         id: "2",
         date: "2025-08-19T16:00:00.000Z",
-        total: 350,
+        total: 6650,
         items: [
-          { productId: 3, name: "Teclado", price: 350, quantity: 1 }
-        ],
-      },
-    ];
+          { productId: 3, quantity: 3, name: "Teclado Mecânico RGB", price: 550 },
+          { productId: 4, quantity: 2, name: "Monitor 4K 27\"", price: 2500 },
+        ]
+      }
+    ]
 
     repositoryMock.findAll.mockResolvedValue(fakePurchases);
 
@@ -44,15 +46,16 @@ describe("PurchaseService", () => {
     expect(purchases).toEqual(fakePurchases);
   });
 
+
   it("deve retornar uma compra por ID", async () => {
+
     const fakePurchase: Purchase = {
       id: "1",
       date: "2025-08-19T15:00:00.000Z",
-      total: 5200,
+      total: 7500,
       items: [
-        { productId: 1, name: "Notebook", price: 5000, quantity: 1 },
-        { productId: 1, name: "Mouse", price: 200, quantity: 1 },
-      ],
+        { productId: 1, quantity: 1, name: "Notebook Gamer Pro", price: 7500 }
+      ]
     };
 
     repositoryMock.findById.mockResolvedValue(fakePurchase);
@@ -66,12 +69,23 @@ describe("PurchaseService", () => {
   it("deve lançar erro se a compra não for encontrada", async () => {
     repositoryMock.findById.mockResolvedValue(null);
 
-    await expect(service.getById("999")).rejects.toThrow("Purchase not found");
+    await expect(service.getById("999")).rejects.toThrow("Compra com o id informado não foi encontrada.");
   });
 
   it("deve lançar erro se total ultrapassar R$20.000", async () => {
 
-    await expect(service.checkout([{ id: 1, quantity: 10 }]))
+    const data = {
+      items: [
+        {
+          productId: 1,
+          quantity: 8,
+          name: "Notebook Gamer Pro",
+          price: 7500
+        }
+      ]
+    }
+
+    await expect(service.checkout(data))
       .rejects
       .toThrow("O valor total da compra excede o limite de R$20.000.");
 

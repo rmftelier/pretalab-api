@@ -2,7 +2,6 @@ import request from "supertest";
 import app from "../../../src/app";
 import mongoose from "mongoose";
 import { purchaseModel } from "../../../src/infra/database/models/purchaseModel";
-import { products } from "../../../src/domain/models/Product";
 import { Types } from "mongoose";
 
 describe("GET /purchases/:id", () => {
@@ -19,7 +18,6 @@ describe("GET /purchases/:id", () => {
 
   beforeEach(async () => {
     await purchaseModel.deleteMany({});
-
   });
 
 
@@ -28,9 +26,19 @@ describe("GET /purchases/:id", () => {
     const createPurchase = await request(app)
       .post("/checkout")
       .send({
-        items: [
-          { id: 1, quantity: 1 },
-          { id: 2, quantity: 2 },
+        "items": [
+          {
+            "productId": 3,
+            "quantity": 2,
+            "name": "Teclado Mecânico RGB",
+            "price": 550
+          },
+          {
+            "productId": 4,
+            "quantity": 3,
+            "name": "Monitor 4K 27\"",
+            "price": 2500
+          }
         ]
       });
 
@@ -39,26 +47,25 @@ describe("GET /purchases/:id", () => {
     const response = await request(app).get(`/purchases/${purchaseId}`);
 
     expect(response.status).toBe(200);
-
     expect(response.body).toMatchObject({
       purchase: {
         id: purchaseId,
         date: expect.any(String),
-        total: 8200,
+        total: 8600,
         items: [
-          { productId: 1, quantity: 1, name: "Notebook Gamer Pro", price: 7500 },
-          { productId: 2, quantity: 2, name: "Mouse Sem Fio Ultra-leve", price: 350 },
+          { productId: 3, quantity: 2, name: "Teclado Mecânico RGB", price: 550 },
+          { productId: 4, quantity: 3, name: "Monitor 4K 27\"", price: 2500 },
         ]
       }
     });
   });
 
-  it("deve retornar o erro 404 quando uma compra não é encontrada", async () => {
+  it("deve retornar o erro 404 quando uma compra não for encontrada", async () => {
     const fakeId = new Types.ObjectId();
 
     const response = await request(app).get(`/purchases/${fakeId}`);
     expect(response.status).toBe(404);
-    expect(response.body).toEqual({ message: "Purchase not found" });
+    expect(response.body).toEqual({ message: "Compra com o id informado não foi encontrada." });
   });
 
 });

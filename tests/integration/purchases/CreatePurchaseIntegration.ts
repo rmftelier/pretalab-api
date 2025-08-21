@@ -21,9 +21,19 @@ describe("POST /checkout", () => {
     const response = await request(app)
       .post("/checkout")
       .send({
-        items: [
-          { id: 1, quantity: 1 },
-          { id: 2, quantity: 2 },
+        "items": [
+          {
+            "productId": 3,
+            "quantity": 2,
+            "name": "Teclado Mecânico RGB",
+            "price": 550
+          },
+          {
+            "productId": 4,
+            "quantity": 3,
+            "name": "Monitor 4K 27\"",
+            "price": 2500
+          }
         ]
       });
 
@@ -32,10 +42,10 @@ describe("POST /checkout", () => {
     expect(response.body).toMatchObject({
       id: expect.any(String),
       date: expect.any(String),
-      total: 8200,
+      total: 8600,
       items: [
-        { productId: 1, quantity: 1, name: "Notebook Gamer Pro", price: 7500 },
-        { productId: 2, quantity: 2, name: "Mouse Sem Fio Ultra-leve", price: 350 }
+        { productId: 3, quantity: 2, name: "Teclado Mecânico RGB", price: 550 },
+        { productId: 4, quantity: 3, name: "Monitor 4K 27\"", price: 2500 }
       ],
     });
 
@@ -45,8 +55,13 @@ describe("POST /checkout", () => {
     const response = await request(app)
       .post("/checkout")
       .send({
-        items: [
-          { id: 4, quantity: 9 }
+        "items": [
+          {
+            "productId": 4,
+            "quantity": 10,
+            "name": "Monitor 4K 27\"",
+            "price": 2500
+          }
         ]
       });
 

@@ -19,13 +19,12 @@ describe("GET /purchases", () => {
   beforeEach(async () => {
     await purchaseModel.deleteMany({});
 
-
     const createPurchase = await request(app)
       .post("/checkout")
       .send({
         items: [
-          { id: 1, quantity: 1 },
-          { id: 2, quantity: 2 },
+          { productId: 1, quantity: 1, name: "Notebook Gamer Pro", price: 7500 },
+          { productId: 2, quantity: 2, name: "Mouse Sem Fio Ultra-leve", price: 350 },
         ]
       });
 
@@ -35,8 +34,8 @@ describe("GET /purchases", () => {
       .post("/checkout")
       .send({
         items: [
-          { id: 3, quantity: 3 },
-          { id: 4, quantity: 2 },
+          { productId: 3, quantity: 3, name: "Teclado Mecânico RGB", price: 550 },
+          { productId: 4, quantity: 2, name: "Monitor 4K 27\"", price: 2500 },
         ]
       });
 
