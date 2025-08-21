@@ -1,6 +1,6 @@
-import { Transaction } from "../models/Transaction";
-import { TransactionRepository } from "../repositories/TransactionRepository";
-import { transactionModel } from "../infra/database/models/transactionModel"
+import { Transaction } from "../../../domain/models/Transaction";
+import { TransactionRepository } from "../../../domain/repositories/TransactionRepository";
+import { transactionModel } from "../../../infra/database/models/transactionModel";
 
 export class MongoTransactionRepository implements TransactionRepository {
   private toEntity(doc: any): Transaction {

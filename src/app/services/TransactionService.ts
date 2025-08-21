@@ -1,5 +1,5 @@
-import { Transaction } from "../models/Transaction";
-import { TransactionRepository } from "../repositories/TransactionRepository";
+import { Transaction } from "../../domain/models/Transaction";
+import { TransactionRepository } from "../../domain/repositories/TransactionRepository";
 
 export class TransactionService {
   constructor(private repository: TransactionRepository) { }

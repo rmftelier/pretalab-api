@@ -1,12 +1,12 @@
-import { Purchase, PurchaseItem } from "../models/Purchase";
-import { InMemoryProductRepository } from "../repositories/inMemoryProductRepository";
-import { PurchaseRepository } from "../repositories/PurchaseRepository";
+import { Purchase, PurchaseItem } from "../../domain/models/Purchase";
+import { InMemoryProductRepository } from "../../infra/database/repositories/InMemoryProductRepository";
+import { PurchaseRepository } from "../../domain/repositories/PurchaseRepository";
 
 export class PurchaseService {
   private productRepository = new InMemoryProductRepository();
-  
+
   constructor(private repository: PurchaseRepository) { }
-  
+
   public async getAll(): Promise<Purchase[]> {
     return await this.repository.findAll();
   };
@@ -21,25 +21,25 @@ export class PurchaseService {
     return purchase;
   };
 
-  public async checkout(productIds:{ id: number; quantity: number}[]): Promise<Purchase> {
-    
+  public async checkout(productIds: { id: number; quantity: number }[]): Promise<Purchase> {
+
     const products = await this.productRepository.findAll();
- 
-    const items: PurchaseItem[] = productIds.map(({id, quantity}) => {
-       const product = products.find((p) => p.id === id);
 
-       if(!product){
-         throw new Error(`Produto com o id ${id} não foi encontrado`);
-       }; 
+    const items: PurchaseItem[] = productIds.map(({ id, quantity }) => {
+      const product = products.find((p) => p.id === id);
 
-       return {
-         productId: product.id, 
-         quantity,
-         name: product.name, 
-         price: product.price 
-       };
+      if (!product) {
+        throw new Error(`Produto com o id ${id} não foi encontrado`);
+      };
+
+      return {
+        productId: product.id,
+        quantity,
+        name: product.name,
+        price: product.price
+      };
     });
-    
+
     const total = items.reduce((sum, item) => sum + item.price * item.quantity, 0);
 
     if (total > 20000) {

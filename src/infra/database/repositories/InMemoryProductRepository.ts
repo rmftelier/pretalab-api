@@ -1,5 +1,5 @@
-import { ProductRepository } from "../repositories/ProductRepository";
-import { Product, products } from "../models/Product";
+import { ProductRepository } from "../../../domain/repositories/ProductRepository";
+import { Product, products } from "../../../domain/models/Product";
 
 export class InMemoryProductRepository implements ProductRepository {
 

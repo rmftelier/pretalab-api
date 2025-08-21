@@ -1,10 +1,11 @@
 import { Request, Response } from "express";
-import { ProductService } from "../services/products";
+import { ProductService } from "../services/ProductService";
 
 export class ProductController {
   constructor(private service: ProductService) { }
 
-  async getAllProducts(req: Request, res: Response) {
+  public async getAllProducts(req: Request, res: Response) {
+    
     const products = await this.service.getAll();
 
     if (!products) {

@@ -1,7 +1,7 @@
-import { PurchaseRepository } from "./PurchaseRepository";
-import { IPurchase, purchaseModel } from "../infra/database/models/purchaseModel";
-import { Purchase } from "../models/Purchase";
-import { products } from "../models/Product";
+import { PurchaseRepository } from "../../../domain/repositories/PurchaseRepository";
+import { IPurchase, purchaseModel } from "../../../infra/database/models/purchaseModel";
+import { Purchase } from "../../../domain/models/Purchase";
+import { products } from "../../../domain/models/Product";
 
 export class MongoPurchaseRepository implements PurchaseRepository {
 
