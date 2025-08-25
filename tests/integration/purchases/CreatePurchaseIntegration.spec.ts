@@ -6,7 +6,7 @@ import { purchaseModel } from "../../../src/infra/database/models/purchaseModel"
 describe("POST /checkout", () => {
 
   beforeAll(async () => {
-    await mongoose.connect(process.env.MONGO_URL_TEST!);
+    await mongoose.connect(process.env.MONGO_URL!);
   });
 
   afterAll(async () => {

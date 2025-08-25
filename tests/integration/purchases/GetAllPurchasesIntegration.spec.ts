@@ -9,7 +9,7 @@ describe("GET /purchases", () => {
   let secondPurchaseId: string;
 
   beforeAll(async () => {
-    await mongoose.connect(process.env.MONGO_URL_TEST!);
+    await mongoose.connect(process.env.MONGO_URL!);
   });
 
   afterAll(async () => {

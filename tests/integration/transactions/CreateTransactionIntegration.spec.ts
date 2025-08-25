@@ -6,7 +6,7 @@ import { transactionModel } from "../../../src/infra/database/models/transaction
 describe("POST /transactions", () => {
 
   beforeAll(async () => {
-    await mongoose.connect(process.env.MONGO_URL_TEST!);
+    await mongoose.connect(process.env.MONGO_URL!);
   });
 
   afterAll(async () => {
