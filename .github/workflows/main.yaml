@@ -52,7 +52,7 @@ jobs:
         run: docker network create "microservice-network"
 
       - name: Set up Mongodb
-        run: docker-compose up -d
+        run: docker compose up -d
 
       - name: Check mongod
         run: docker ps
