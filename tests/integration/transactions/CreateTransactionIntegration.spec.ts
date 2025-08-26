@@ -41,6 +41,18 @@ describe("POST /transactions", () => {
       }
     });
 
+    const savedTransaction = await transactionModel.findById(response.body.transaction.id).lean();
+
+    expect(savedTransaction).toMatchObject({
+      _id: expect.any(mongoose.Types.ObjectId),
+      date: expect.any(Date),
+      description: "Consulta Médica",
+      amount: 100,
+      type: "income",
+      category: "Saúde"
+    });
+
+
   });
 
 });

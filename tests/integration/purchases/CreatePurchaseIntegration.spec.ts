@@ -49,6 +49,16 @@ describe("POST /checkout", () => {
       ],
     });
 
+    const savedPurchase = await purchaseModel.findById(response.body.id).lean();
+    expect(savedPurchase).toMatchObject({
+      _id: expect.any(mongoose.Types.ObjectId),
+      date: expect.any(Date),
+      total: 8600,
+      items: [
+        { productId: "3", quantity: 2, name: "Teclado Mecânico RGB", price: 550 },
+        { productId: "4", quantity: 3, name: "Monitor 4K 27\"", price: 2500 }
+      ]
+    });
   });
 
   it("deve retornar erro 400 se o total da compra passar R$20.000", async () => {
@@ -68,7 +78,6 @@ describe("POST /checkout", () => {
     expect(response.status).toBe(400);
     expect(response.body).toMatchObject({
       message: "O valor total da compra excede o limite de R$20.000."
-    })
-
+    });
   });
 });

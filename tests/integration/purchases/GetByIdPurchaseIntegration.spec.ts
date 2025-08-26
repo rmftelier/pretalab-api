@@ -58,6 +58,16 @@ describe("GET /purchases/:id", () => {
         ]
       }
     });
+
+    const savedPurchase = await purchaseModel.findById(purchaseId).lean();
+    expect(savedPurchase).toMatchObject({
+      _id: expect.any(mongoose.Types.ObjectId),
+      date: expect.any(Date),
+      total: 8600,
+      items: expect.any(Array),
+    });
+
+
   });
 
   it("deve retornar o erro 404 quando uma compra não for encontrada", async () => {

@@ -45,6 +45,17 @@ describe("GET /transactions/:id", () => {
         category: "Saúde"
       }
     });
+
+    const savedTransaction = await transactionModel.findById(id).lean();
+    expect(savedTransaction).toMatchObject({
+      _id: expect.any(mongoose.Types.ObjectId),
+      date: expect.any(Date),
+      description: "Consulta Médica",
+      amount: 100,
+      type: "income",
+      category: "Saúde"
+    });
+
   });
 
   it("deve retornar um erro 404 quando a transação não é encontrada", async () => {
@@ -53,6 +64,7 @@ describe("GET /transactions/:id", () => {
     const response = await request(app).get(`/transactions/${fakeId}`);
     expect(response.status).toBe(404);
     expect(response.body).toMatchObject({ message: "A transação financeira com o id informado não foi encontrada." });
+
   });
 
 });
