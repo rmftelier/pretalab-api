@@ -9,7 +9,7 @@ describe("GET /purchases", () => {
   let secondPurchaseId: string;
 
   beforeAll(async () => {
-    await mongoose.connect(process.env.MONGO_URL_TEST!);
+    await mongoose.connect(process.env.MONGO_URL!);
   });
 
   afterAll(async () => {
@@ -69,5 +69,23 @@ describe("GET /purchases", () => {
         ]
       }
     ]);
+
+    const purchases = await purchaseModel.find({}).lean();
+
+    expect(purchases).toMatchObject([
+      {
+        _id: expect.any(mongoose.Types.ObjectId),
+        date: expect.any(Date),
+        total: 8200,
+        items: expect.any(Array),
+      },
+      {
+        _id: expect.any(mongoose.Types.ObjectId),
+        date: expect.any(Date),
+        total: 6650,
+        items: expect.any(Array),
+      }
+    ]);
   });
+
 });

@@ -6,7 +6,7 @@ import { transactionModel } from "../../../src/infra/database/models/transaction
 describe("POST /transactions", () => {
 
   beforeAll(async () => {
-    await mongoose.connect(process.env.MONGO_URL_TEST!);
+    await mongoose.connect(process.env.MONGO_URL!);
   });
 
   afterAll(async () => {
@@ -40,6 +40,18 @@ describe("POST /transactions", () => {
         category: "Saúde"
       }
     });
+
+    const savedTransaction = await transactionModel.findById(response.body.transaction.id).lean();
+
+    expect(savedTransaction).toMatchObject({
+      _id: expect.any(mongoose.Types.ObjectId),
+      date: expect.any(Date),
+      description: "Consulta Médica",
+      amount: 100,
+      type: "income",
+      category: "Saúde"
+    });
+
 
   });
 
