@@ -1,16 +1,30 @@
 import { Request, Response } from "express";
-import { ai, chatAiInteration } from "../services/prompt";
+import { GeminiService } from "../services/GeminiService";
 
-export const aiResponse = async (req: Request, res: Response) => {
-  const { prompt } = req.body;
+export class GeminiController {
+  constructor(private service: GeminiService) { }
 
-  const response = await ai(prompt);
-  res.json({ response });
-}
+  public async aiResponse(req: Request, res: Response) {
+    const { prompt } = req.body;
 
-export const chatResponse = async (req: Request, res: Response) => {
-  const { prompt } = req.body;
+    try {
+      const response = await this.service.ai(prompt);
+      return res.status(200).json({ response });
 
-  const response = await chatAiInteration(prompt);
-  res.json({ response });
+    } catch (error: any) {
+      return res.status(500).json({ message: error.message })
+    }
+  }
+
+  public async chatResponse(req: Request, res: Response) {
+    const { prompt } = req.body;
+
+    try {
+      const response = await this.service.chatAiInteration(prompt);
+      return res.status(200).json({ response });
+
+    } catch (error: any) {
+      return res.status(500).json({ message: error.message })
+    }
+  }
 }
