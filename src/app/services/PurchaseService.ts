@@ -27,11 +27,11 @@ export class PurchaseService {
 
   public async checkout(data: PurchaseInputDTO): Promise<Purchase> {
 
-    if (!data.items || data.items.length === 0) {
+    if (!data.cart || data.cart.length === 0) {
       throw new Error("A compra deve ter pelo menos 1 item.");
     }
 
-    const total = data.items.reduce(
+    const total = data.cart.reduce(
       (soma, item) => soma + item.price * item.quantity, 0
     );
 
