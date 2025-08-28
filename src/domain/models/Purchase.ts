@@ -12,8 +12,13 @@ export interface Purchase {
   cart: Item[];
 };
 
+export interface PurchaseItemInputDTO {
+  productId: string;
+  quantity: number;
+}
+
 export interface PurchaseInputDTO {
-  cart: Item[];
+  cart: PurchaseItemInputDTO[];
 };
 
 export interface CreatePurchaseDTO {

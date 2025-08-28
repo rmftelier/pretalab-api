@@ -1,9 +1,13 @@
 import { PurchaseInputDTO, Purchase } from "../../domain/models/Purchase";
 import { PurchaseRepository } from "../../domain/repositories/PurchaseRepository";
+import { ProductService } from "./ProductService";
 
 export class PurchaseService {
 
-  constructor(private repository: PurchaseRepository) { }
+  constructor(
+    private repository: PurchaseRepository,
+    private productService: ProductService
+  ) { }
 
   public async getAll(): Promise<Purchase[]> {
     const purchases = await this.repository.findAll();
@@ -31,7 +35,23 @@ export class PurchaseService {
       throw new Error("A compra deve ter pelo menos 1 item.");
     }
 
-    const total = data.cart.reduce(
+    const products = await this.productService.getAll();
+
+    const cart = data.cart.map(item => {
+      const product = products.find(p => p.id === item.productId);
+      if (!product) {
+        throw new Error(`Produto ${item.productId} não foi encontrado.`);
+      }
+
+      return {
+        productId: item.productId,
+        quantity: item.quantity,
+        name: product.name,
+        price: product.price
+      };
+    });
+
+    const total = cart.reduce(
       (soma, item) => soma + item.price * item.quantity, 0
     );
 
@@ -42,9 +62,9 @@ export class PurchaseService {
     const purchaseToSave = {
       date: new Date().toISOString(),
       total,
-      ...data
+      cart
     }
-    
+
     const createPurchase = await this.repository.create(purchaseToSave);
 
     return createPurchase;
