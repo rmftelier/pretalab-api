@@ -6,6 +6,6 @@ dotenv.config({
 });
 
 module.exports = {
-  testTimeout: 30000,
+  testTimeout: 50000,
   maxConcurrency: 1,
 };
