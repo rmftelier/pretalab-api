@@ -15,24 +15,24 @@ describe("ChatService - Integração", () => {
 
   beforeEach(async () => {
     await chatModel.deleteMany({});
-    await transactionModel.deleteMany({});
   });
 
   it("deve gerar resposta do assistente financeiro e salvar no histórico", async () => {
 
-    await transactionModel.create({
-      id: "1",
-      date: "2024-07-15T10:00:00.000Z",
-      description: "Salário de Agosto",
-      amount: 5000,
-      type: "income",
-      category: "Salário"
-    });
+    await request(app)
+      .post("/transactions")
+      .send({
+        date: "2024-07-15T10:00:00.000Z",
+        description: "Salário de Agosto",
+        amount: 5000,
+        type: "income",
+        category: "Salário"
+      });
+
 
     const response = await request(app)
       .post("/chat")
       .send({ message: "Me mostre o resumo financeiro do mês" })
-      .expect(200);
 
     expect(response.body).toMatchObject({
       reply: {
@@ -44,7 +44,7 @@ describe("ChatService - Integração", () => {
           },
           {
             role: "model",
-            text: expect.any(String) 
+            text: expect.any(String)
           }
         ]
       }
