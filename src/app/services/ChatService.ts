@@ -1,16 +1,15 @@
 import { geminiInternal } from "../../infra/adapters/gemini";
 import { getAi } from "../../infra/ai/gemini";
 import { TransactionService } from "./TransactionService";
-import { MongoTransactionRepository } from "../../infra/database/repositories/MongoTransactionRepository";
 import { ChatRepository } from "../../domain/repositories/ChatRepository";
 import { ChatMessage } from "../../domain/models/Chat";
 
 export class ChatService {
 
-  constructor(private repository: ChatRepository) { }
-
-  private transactionRepository = new MongoTransactionRepository();
-  private transactionService = new TransactionService(this.transactionRepository);
+  constructor(
+    private repository: ChatRepository,
+    private transactionService: TransactionService
+  ) { }
 
   private chatContext: ChatMessage[] = [];
 
