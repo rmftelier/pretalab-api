@@ -26,3 +26,10 @@ export interface CreatePurchaseDTO {
   total: number;
   cart: Item[];
 }
+
+export interface PurchaseResponseDTO {
+  id: string; 
+  date: string; 
+  total: number; 
+  items: Item[];
+}

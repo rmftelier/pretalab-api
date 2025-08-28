@@ -29,15 +29,11 @@ describe("GET /purchases/:id", () => {
         "cart": [
           {
             "productId": "3",
-            "quantity": 2,
-            "name": "Teclado Mecânico RGB",
-            "price": 550
+            "quantity": 2
           },
           {
             "productId": "4",
-            "quantity": 3,
-            "name": "Monitor 4K 27\"",
-            "price": 2500
+            "quantity": 3
           }
         ]
       });
@@ -52,7 +48,7 @@ describe("GET /purchases/:id", () => {
         id: purchaseId,
         date: expect.any(String),
         total: 8600,
-        cart: [
+        items: [
           { productId: "3", quantity: 2, name: "Teclado Mecânico RGB", price: 550 },
           { productId: "4", quantity: 3, name: "Monitor 4K 27\"", price: 2500 },
         ]
