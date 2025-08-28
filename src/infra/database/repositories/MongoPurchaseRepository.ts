@@ -9,7 +9,7 @@ export class MongoPurchaseRepository implements PurchaseRepository {
       id: doc._id.toString(),
       date: doc.date.toISOString(),
       total: doc.total,
-      items: doc.items.map(item => ({
+      cart: doc.cart.map(item => ({
         productId: item.productId,
         quantity: item.quantity,
         name: item.name,

@@ -26,7 +26,7 @@ describe("GET /purchases/:id", () => {
     const createPurchase = await request(app)
       .post("/checkout")
       .send({
-        "items": [
+        "cart": [
           {
             "productId": "3",
             "quantity": 2,
@@ -52,7 +52,7 @@ describe("GET /purchases/:id", () => {
         id: purchaseId,
         date: expect.any(String),
         total: 8600,
-        items: [
+        cart: [
           { productId: "3", quantity: 2, name: "Teclado Mecânico RGB", price: 550 },
           { productId: "4", quantity: 3, name: "Monitor 4K 27\"", price: 2500 },
         ]
@@ -64,7 +64,7 @@ describe("GET /purchases/:id", () => {
       _id: expect.any(mongoose.Types.ObjectId),
       date: expect.any(Date),
       total: 8600,
-      items: expect.any(Array),
+      cart: expect.any(Array),
     });
 
 

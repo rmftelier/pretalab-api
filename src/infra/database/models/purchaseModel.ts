@@ -11,7 +11,7 @@ export interface IPurchase extends Document {
   _id: Types.ObjectId;
   date: Date;
   total: number;
-  items: IPurchaseItem[];
+  cart: IPurchaseItem[];
 }
 
 const purchaseItemSchema = new Schema<IPurchaseItem>({
@@ -24,7 +24,7 @@ const purchaseItemSchema = new Schema<IPurchaseItem>({
 const purchaseSchema = new Schema<IPurchase>({
   date: { type: Date, default: Date.now },
   total: { type: Number, required: true },
-  items: [purchaseItemSchema]
+  cart: [purchaseItemSchema]
 });
 
 export const purchaseModel = mongoose.model<IPurchase>('Purchase', purchaseSchema);

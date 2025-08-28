@@ -9,15 +9,15 @@ export interface Purchase {
   id: string;
   date: string;
   total: number;
-  items: Item[];
+  cart: Item[];
 };
 
 export interface PurchaseInputDTO {
-  items: Item[];
+  cart: Item[];
 };
 
 export interface CreatePurchaseDTO {
   date: string;
   total: number;
-  items: Item[];
+  cart: Item[];
 }

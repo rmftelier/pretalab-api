@@ -28,10 +28,10 @@ export class PurchaseController {
   };
 
   public async createPurchase(req: Request, res: Response) {
-    const { items } = req.body;
+    const { cart } = req.body;
 
     try {
-      const purchase = await this.service.checkout({ items });
+      const purchase = await this.service.checkout({ cart });
       return res.status(201).json(purchase);
     } catch (error: any) {
       return res.status(400).json({ message: error.message });
