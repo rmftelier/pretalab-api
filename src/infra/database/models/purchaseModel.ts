@@ -17,8 +17,8 @@ export interface IPurchase extends Document {
 const purchaseItemSchema = new Schema<IPurchaseItem>({
   productId: { type: String, required: true },
   quantity: { type: Number, required: true },
-  name: { type: String, required: true },
-  price: { type: Number, required: true }
+  name: { type: String },
+  price: { type: Number }
 });
 
 const purchaseSchema = new Schema<IPurchase>({
