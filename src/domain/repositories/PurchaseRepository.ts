@@ -1,4 +1,4 @@
-import { Purchase, CreatePurchaseDTO, PurchaseResponseDTO } from "../models/Purchase";
+import { CreatePurchaseDTO, PurchaseResponseDTO } from "../models/Purchase";
 
 export interface PurchaseRepository {
   create(data: CreatePurchaseDTO): Promise<PurchaseResponseDTO>;

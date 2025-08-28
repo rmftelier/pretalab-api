@@ -19,7 +19,6 @@ const transactionSchema = new Schema<ITransaction>({
     required: true
   },
   category: { type: String, required: true }
-
 });
 
 export const transactionModel = mongoose.model('Transaction', transactionSchema);

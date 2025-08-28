@@ -1,6 +1,6 @@
 import { PurchaseRepository } from "../../../domain/repositories/PurchaseRepository";
 import { IPurchase, purchaseModel } from "../../../infra/database/models/purchaseModel";
-import { CreatePurchaseDTO, Purchase, PurchaseResponseDTO } from "../../../domain/models/Purchase";
+import { CreatePurchaseDTO, PurchaseResponseDTO } from "../../../domain/models/Purchase";
 
 export class MongoPurchaseRepository implements PurchaseRepository {
 

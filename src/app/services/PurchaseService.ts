@@ -1,4 +1,4 @@
-import { PurchaseInputDTO, Purchase, PurchaseResponseDTO, Item, CreatePurchaseDTO } from "../../domain/models/Purchase";
+import { PurchaseInputDTO, PurchaseResponseDTO, Item, CreatePurchaseDTO } from "../../domain/models/Purchase";
 import { PurchaseRepository } from "../../domain/repositories/PurchaseRepository";
 import { ProductService } from "./ProductService";
 

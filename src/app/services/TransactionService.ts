@@ -1,7 +1,6 @@
 import { Transaction, DataTransaction } from "../../domain/models/Transaction";
 import { TransactionRepository } from "../../domain/repositories/TransactionRepository";
 
-
 export class TransactionService {
   constructor(private repository: TransactionRepository) { }
 

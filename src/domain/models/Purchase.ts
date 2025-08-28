@@ -5,13 +5,6 @@ export interface Item {
   price: number;
 }
 
-export interface Purchase {
-  id: string;
-  date: string;
-  total: number;
-  cart: Item[];
-};
-
 export interface PurchaseItemInputDTO {
   productId: string;
   quantity: number;
