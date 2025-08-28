@@ -1,7 +1,7 @@
-import { Purchase, CreatePurchaseDTO } from "../models/Purchase";
+import { Purchase, CreatePurchaseDTO, PurchaseResponseDTO } from "../models/Purchase";
 
 export interface PurchaseRepository {
-  create(data: CreatePurchaseDTO): Promise<Purchase>;
-  findAll(): Promise<Purchase[]>;
-  findById(id: string): Promise<Purchase | null>;
+  create(data: CreatePurchaseDTO): Promise<PurchaseResponseDTO>;
+  findAll(): Promise<PurchaseResponseDTO[]>;
+  findById(id: string): Promise<PurchaseResponseDTO | null>;
 }

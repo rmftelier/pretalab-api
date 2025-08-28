@@ -1,4 +1,4 @@
-import { PurchaseInputDTO, Purchase } from "../../domain/models/Purchase";
+import { PurchaseInputDTO, Purchase, PurchaseResponseDTO, Item, CreatePurchaseDTO } from "../../domain/models/Purchase";
 import { PurchaseRepository } from "../../domain/repositories/PurchaseRepository";
 import { ProductService } from "./ProductService";
 
@@ -9,17 +9,17 @@ export class PurchaseService {
     private productService: ProductService
   ) { }
 
-  public async getAll(): Promise<Purchase[]> {
+  public async getAll(): Promise<PurchaseResponseDTO[]> {
     const purchases = await this.repository.findAll();
 
     if (!purchases) {
       throw new Error("Compras não encontradas.");
     }
 
-    return await this.repository.findAll();
+    return purchases;
   };
 
-  public async getById(id: string): Promise<Purchase | null> {
+  public async getById(id: string): Promise<PurchaseResponseDTO | null> {
     const purchase = await this.repository.findById(id);
 
     if (!purchase) {
@@ -29,7 +29,7 @@ export class PurchaseService {
     return purchase;
   };
 
-  public async checkout(data: PurchaseInputDTO): Promise<Purchase> {
+  public async checkout(data: PurchaseInputDTO): Promise<PurchaseResponseDTO> {
 
     if (!data.cart || data.cart.length === 0) {
       throw new Error("A compra deve ter pelo menos 1 item.");
@@ -37,7 +37,7 @@ export class PurchaseService {
 
     const products = await this.productService.getAll();
 
-    const cart = data.cart.map(item => {
+    const cart: Item[] = data.cart.map(item => {
       const product = products.find(p => p.id === item.productId);
       if (!product) {
         throw new Error(`Produto ${item.productId} não foi encontrado.`);
@@ -59,15 +59,15 @@ export class PurchaseService {
       throw new Error("O valor total da compra excede o limite de R$20.000.");
     }
 
-    const purchaseToSave = {
+    const purchaseToSave: CreatePurchaseDTO = {
       date: new Date().toISOString(),
       total,
       cart
     }
 
-    const createPurchase = await this.repository.create(purchaseToSave);
+    const createdPurchase = await this.repository.create(purchaseToSave);
 
-    return createPurchase;
+    return createdPurchase;
   }
 
 };

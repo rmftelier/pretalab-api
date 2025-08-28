@@ -1,4 +1,4 @@
-import { Purchase, PurchaseInputDTO } from "../../../src/domain/models/Purchase";
+import { PurchaseInputDTO, PurchaseResponseDTO } from "../../../src/domain/models/Purchase";
 import { PurchaseService } from "../../../src/app/services/PurchaseService";
 import { PurchaseRepository } from "../../../src/domain/repositories/PurchaseRepository";
 import { Product } from "../../../src/domain/models/Product";
@@ -25,12 +25,12 @@ describe("PurchaseService", () => {
 
   it("deve retornar todas as compras", async () => {
 
-    const fakePurchases: Purchase[] = [
+    const fakePurchases: PurchaseResponseDTO[] = [
       {
         id: "1",
         date: "2025-08-19T15:00:00.000Z",
         total: 8200,
-        cart: [
+        items: [
           { productId: "1", quantity: 1, name: "Notebook Gamer Pro", price: 7500 },
           { productId: "2", quantity: 2, name: "Mouse Sem Fio Ultra-leve", price: 350 },
         ]
@@ -39,7 +39,7 @@ describe("PurchaseService", () => {
         id: "2",
         date: "2025-08-19T16:00:00.000Z",
         total: 6650,
-        cart: [
+        items: [
           { productId: "3", quantity: 3, name: "Teclado Mecânico RGB", price: 550 },
           { productId: "4", quantity: 2, name: "Monitor 4K 27\"", price: 2500 },
         ]
@@ -56,11 +56,11 @@ describe("PurchaseService", () => {
 
   it("deve retornar uma compra por ID", async () => {
 
-    const fakePurchase: Purchase = {
+    const fakePurchase: PurchaseResponseDTO = {
       id: "1",
       date: "2025-08-19T15:00:00.000Z",
       total: 7500,
-      cart: [
+      items: [
         { productId: "1", quantity: 1, name: "Notebook Gamer Pro", price: 7500 }
       ]
     };
