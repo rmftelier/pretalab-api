@@ -44,7 +44,7 @@ export class PurchaseService {
       total,
       ...data
     }
-
+    
     const createPurchase = await this.repository.create(purchaseToSave);
 
     return createPurchase;

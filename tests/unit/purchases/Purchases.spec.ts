@@ -23,7 +23,7 @@ describe("PurchaseService", () => {
         id: "1",
         date: "2025-08-19T15:00:00.000Z",
         total: 8200,
-        items: [
+        cart: [
           { productId: "1", quantity: 1, name: "Notebook Gamer Pro", price: 7500 },
           { productId: "2", quantity: 2, name: "Mouse Sem Fio Ultra-leve", price: 350 },
         ]
@@ -32,7 +32,7 @@ describe("PurchaseService", () => {
         id: "2",
         date: "2025-08-19T16:00:00.000Z",
         total: 6650,
-        items: [
+        cart: [
           { productId: "3", quantity: 3, name: "Teclado Mecânico RGB", price: 550 },
           { productId: "4", quantity: 2, name: "Monitor 4K 27\"", price: 2500 },
         ]
@@ -53,7 +53,7 @@ describe("PurchaseService", () => {
       id: "1",
       date: "2025-08-19T15:00:00.000Z",
       total: 7500,
-      items: [
+      cart: [
         { productId: "1", quantity: 1, name: "Notebook Gamer Pro", price: 7500 }
       ]
     };
@@ -75,7 +75,7 @@ describe("PurchaseService", () => {
   it("deve lançar erro se total ultrapassar R$20.000", async () => {
 
     const data = {
-      items: [
+      cart: [
         {
           productId: "1",
           quantity: 8,
