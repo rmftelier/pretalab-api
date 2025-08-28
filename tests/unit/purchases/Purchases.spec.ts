@@ -1,10 +1,12 @@
-import { Purchase } from "../../../src/domain/models/Purchase";
+import { Purchase, PurchaseInputDTO } from "../../../src/domain/models/Purchase";
 import { PurchaseService } from "../../../src/app/services/PurchaseService";
 import { PurchaseRepository } from "../../../src/domain/repositories/PurchaseRepository";
+import { Product } from "../../../src/domain/models/Product";
 
 describe("PurchaseService", () => {
   let repositoryMock: jest.Mocked<PurchaseRepository>;
   let service: PurchaseService;
+  let productService: { getAll: jest.Mock<Promise<Product[]>, []> };
 
   beforeEach(() => {
     repositoryMock = {
@@ -13,7 +15,12 @@ describe("PurchaseService", () => {
       create: jest.fn()
     };
 
-    service = new PurchaseService(repositoryMock);
+    productService = {
+      getAll: jest.fn()
+    };
+
+
+    service = new PurchaseService(repositoryMock, productService as any);
   });
 
   it("deve retornar todas as compras", async () => {
@@ -74,13 +81,15 @@ describe("PurchaseService", () => {
 
   it("deve lançar erro se total ultrapassar R$20.000", async () => {
 
-    const data = {
+    productService.getAll.mockResolvedValue([
+      { id: "1", name: "Notebook Gamer Pro", price: 7500 }
+    ]);
+
+    const data: PurchaseInputDTO = {
       cart: [
         {
           productId: "1",
-          quantity: 8,
-          name: "Notebook Gamer Pro",
-          price: 7500
+          quantity: 8
         }
       ]
     }
